@@ -1,21 +1,78 @@
--- Parent this script to StarterPlayerScripts or StarterGui
--- Make sure you have a ScreenGui with a TextButton in StarterGui
+-- Place this LocalScript in StarterPlayerScripts or StarterGui
 
 -- Player Username
 local allowedUsername = "collljamesbroalt1"
 
--- References
-local player = game.Players.LocalPlayer
-local gui = player:WaitForChild("PlayerGui"):WaitForChild("ScreenGui") -- Replace 'ScreenGui' with your GUI name
-local kickButton = gui:WaitForChild("TextButton") -- Replace 'TextButton' with your button name
+-- Services
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
 
--- Button Click Event
+-- Create GUI elements
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
+screenGui.Name = "AdminGui"
+screenGui.ResetOnSpawn = false
+
+local frame = Instance.new("Frame")
+frame.Parent = screenGui
+frame.Size = UDim2.new(0, 300, 0, 150)
+frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true -- Make the GUI draggable
+
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+title.Text = "Admin Controls"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSans
+title.TextSize = 18
+
+local kickButton = Instance.new("TextButton")
+kickButton.Parent = frame
+kickButton.Size = UDim2.new(0.8, 0, 0, 40)
+kickButton.Position = UDim2.new(0.1, 0, 0.3, 0)
+kickButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+kickButton.Text = "Kick Players"
+kickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+kickButton.Font = Enum.Font.SourceSans
+kickButton.TextSize = 18
+
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Parent = frame
+minimizeButton.Size = UDim2.new(0.2, 0, 0, 30)
+minimizeButton.Position = UDim2.new(0.8, -10, 0, 0)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+minimizeButton.Text = "-"
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.Font = Enum.Font.SourceSans
+minimizeButton.TextSize = 18
+
+-- Functionality
+local isMinimized = false
+
+-- Minimize/Restore functionality
+minimizeButton.MouseButton1Click:Connect(function()
+    if isMinimized then
+        frame.Size = UDim2.new(0, 300, 0, 150)
+        frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+        minimizeButton.Text = "-"
+    else
+        frame.Size = UDim2.new(0, 300, 0, 30)
+        frame.Position = UDim2.new(0.5, -150, 0.5, -15)
+        minimizeButton.Text = "+"
+    end
+    isMinimized = not isMinimized
+end)
+
+-- Kick Players functionality
 kickButton.MouseButton1Click:Connect(function()
-    -- Loop through all players
-    for _, plr in pairs(game.Players:GetPlayers()) do
-        -- Check if the player is NOT the allowed user
+    for _, plr in pairs(Players:GetPlayers()) do
         if plr.Name ~= allowedUsername then
-            -- Kick the player
             plr:Kick("You have been removed from the game by " .. allowedUsername)
         end
     end
