@@ -1,0 +1,23 @@
+-- LocalScript inside StarterPlayer -> StarterPlayerScripts
+
+local player = game.Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- The name of the AK47 model in ReplicatedStorage
+local ak47Name = "AK47"  -- Make sure the model is named correctly in ReplicatedStorage
+
+-- Function to give AK47 to the player
+local function giveAK47()
+    -- Check if the AK47 exists in ReplicatedStorage
+    local ak47 = ReplicatedStorage:FindFirstChild(ak47Name)
+    if ak47 then
+        -- Clone the AK47 and parent it to the player's character
+        local newAK47 = ak47:Clone()
+        newAK47.Parent = player.Character:WaitForChild("Backpack")  -- Equip it to the player's Backpack
+    else
+        warn("AK47 model not found in ReplicatedStorage")
+    end
+end
+
+-- Call the function to give the player the AK47
+giveAK47()
