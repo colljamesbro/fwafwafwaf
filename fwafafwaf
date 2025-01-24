@@ -1,79 +1,34 @@
--- Place this LocalScript in StarterPlayerScripts or StarterGui
-
--- Player Username
-local allowedUsername = "collljamesbroalt1"
-
--- Services
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
+-- Create a GUI in the LocalPlayer's PlayerGui
+local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Create GUI elements
+-- Define the players who should not be kicked
+local whitelist = {
+    ["collljamesbroalt1"] = true,
+    ["Sidjndnxnxnx"] = true
+}
+
+-- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "KickGui"
 screenGui.Parent = playerGui
-screenGui.Name = "AdminGui"
-screenGui.ResetOnSpawn = false
 
-local frame = Instance.new("Frame")
-frame.Parent = screenGui
-frame.Size = UDim2.new(0, 300, 0, 150)
-frame.Position = UDim2.new(0.5, -150, 0.5, -75)
-frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-frame.BorderSizePixel = 0
-frame.Active = true
-frame.Draggable = true -- Make the GUI draggable
+-- Create the button
+local button = Instance.new("TextButton")
+button.Name = "KickButton"
+button.Size = UDim2.new(0, 200, 0, 50)
+button.Position = UDim2.new(0.5, -100, 0.5, -25)
+button.Text = "Kick Everyone (Except Whitelist)"
+button.TextScaled = true
+button.BackgroundColor3 = Color3.new(1, 0, 0)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.Parent = screenGui
 
-local title = Instance.new("TextLabel")
-title.Parent = frame
-title.Size = UDim2.new(1, 0, 0, 30)
-title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-title.Text = "Admin Controls"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.Font = Enum.Font.SourceSans
-title.TextSize = 18
-
-local kickButton = Instance.new("TextButton")
-kickButton.Parent = frame
-kickButton.Size = UDim2.new(0.8, 0, 0, 40)
-kickButton.Position = UDim2.new(0.1, 0, 0.3, 0)
-kickButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-kickButton.Text = "Kick Players"
-kickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-kickButton.Font = Enum.Font.SourceSans
-kickButton.TextSize = 18
-
-local minimizeButton = Instance.new("TextButton")
-minimizeButton.Parent = frame
-minimizeButton.Size = UDim2.new(0.2, 0, 0, 30)
-minimizeButton.Position = UDim2.new(0.8, -10, 0, 0)
-minimizeButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-minimizeButton.Text = "-"
-minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-minimizeButton.Font = Enum.Font.SourceSans
-minimizeButton.TextSize = 18
-
--- Functionality
-local isMinimized = false
-
--- Minimize/Restore functionality
-minimizeButton.MouseButton1Click:Connect(function()
-    if isMinimized then
-        frame.Size = UDim2.new(0, 300, 0, 150)
-        frame.Position = UDim2.new(0.5, -150, 0.5, -75)
-        minimizeButton.Text = "-"
-    else
-        frame.Size = UDim2.new(0, 300, 0, 30)
-        frame.Position = UDim2.new(0.5, -150, 0.5, -15)
-        minimizeButton.Text = "+"
-    end
-    isMinimized = not isMinimized
-end)
-
--- Kick Players functionality
-kickButton.MouseButton1Click:Connect(function()
-    for _, plr in pairs(Players:GetPlayers()) do
-        if plr.Name ~= allowedUsername then
-            plr:Kick("You have been removed from the game by " .. allowedUsername)
+-- Button click functionality
+button.MouseButton1Click:Connect(function()
+    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
+        if not whitelist[otherPlayer.Name] then
+            otherPlayer:Kick("You have been removed by the game owner.")
         end
     end
 end)
