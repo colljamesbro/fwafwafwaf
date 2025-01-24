@@ -10,15 +10,29 @@ frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 frame.Parent = screenGui
 
 local label = Instance.new("TextLabel")
-label.Size = UDim2.new(1, 0, 1, 0)
-label.Text = "Kicking Everyone Except You"
+label.Size = UDim2.new(1, 0, 0.6, 0)
+label.Text = "Kick Everyone Except You"
 label.TextColor3 = Color3.fromRGB(255, 255, 255)
-label.TextSize = 24
+label.TextSize = 20
+label.BackgroundTransparency = 1
 label.Parent = frame
 
--- Kick everyone except you
-for _, plr in pairs(game.Players:GetPlayers()) do
-    if plr.Name ~= player.Name then
-        plr:Kick("You have been kicked out of the game!")
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(1, 0, 0.4, 0)
+button.Position = UDim2.new(0, 0, 0.6, 0)
+button.Text = "Kick!"
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+button.Parent = frame
+
+-- Function to kick everyone except the local player
+local function kickPlayers()
+    for _, plr in pairs(game.Players:GetPlayers()) do
+        if plr.Name ~= player.Name then
+            plr:Kick("You have been kicked out of the game!")
+        end
     end
 end
+
+-- Button click event to kick players
+button.MouseButton1Click:Connect(kickPlayers)
