@@ -1,7 +1,3 @@
--- Create a GUI in the LocalPlayer's PlayerGui
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-
 -- Define the players who should not be kicked
 local whitelist = {
     ["collljamesbroalt1"] = true,
@@ -11,7 +7,7 @@ local whitelist = {
 -- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "KickGui"
-screenGui.Parent = playerGui
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 -- Create the button
 local button = Instance.new("TextButton")
