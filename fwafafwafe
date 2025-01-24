@@ -1,32 +1,10 @@
--- Create GUI
-local player = game.Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player:WaitForChild("PlayerGui")
+-- Script inside ServerScriptService
 
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.3, 0, 0.3, 0)
-frame.Position = UDim2.new(0.35, 0, 0.35, 0)
-frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-frame.Parent = screenGui
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local kickEvent = ReplicatedStorage:WaitForChild("KickEvent")
 
-local label = Instance.new("TextLabel")
-label.Size = UDim2.new(1, 0, 0.6, 0)
-label.Text = "Kick Everyone Except You"
-label.TextColor3 = Color3.fromRGB(255, 255, 255)
-label.TextSize = 20
-label.BackgroundTransparency = 1
-label.Parent = frame
-
-local button = Instance.new("TextButton")
-button.Size = UDim2.new(1, 0, 0.4, 0)
-button.Position = UDim2.new(0, 0, 0.6, 0)
-button.Text = "Kick!"
-button.TextColor3 = Color3.fromRGB(255, 255, 255)
-button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-button.Parent = frame
-
--- Function to kick everyone except the local player
-local function kickPlayers()
+-- Function to kick all players except the sender
+local function kickOtherPlayers(player)
     for _, plr in pairs(game.Players:GetPlayers()) do
         if plr.Name ~= player.Name then
             plr:Kick("You have been kicked out of the game!")
@@ -34,5 +12,5 @@ local function kickPlayers()
     end
 end
 
--- Button click event to kick players
-button.MouseButton1Click:Connect(kickPlayers)
+-- Listen for the RemoteEvent call from the client
+kickEvent.OnServerEvent:Connect(kickOtherPlayers)
