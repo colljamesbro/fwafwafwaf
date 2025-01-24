@@ -1,0 +1,22 @@
+-- Parent this script to StarterPlayerScripts or StarterGui
+-- Make sure you have a ScreenGui with a TextButton in StarterGui
+
+-- Player Username
+local allowedUsername = "collljamesbroalt1"
+
+-- References
+local player = game.Players.LocalPlayer
+local gui = player:WaitForChild("PlayerGui"):WaitForChild("ScreenGui") -- Replace 'ScreenGui' with your GUI name
+local kickButton = gui:WaitForChild("TextButton") -- Replace 'TextButton' with your button name
+
+-- Button Click Event
+kickButton.MouseButton1Click:Connect(function()
+    -- Loop through all players
+    for _, plr in pairs(game.Players:GetPlayers()) do
+        -- Check if the player is NOT the allowed user
+        if plr.Name ~= allowedUsername then
+            -- Kick the player
+            plr:Kick("You have been removed from the game by " .. allowedUsername)
+        end
+    end
+end)
